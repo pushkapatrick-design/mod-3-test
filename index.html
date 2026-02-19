@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIP Identification Process</title>
+  
+  <!-- Open Sans Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: 'Open Sans', sans-serif;
+    }
+    
+    .chevron {
+      transition: transform 0.3s ease;
+    }
+    
+    .chevron.rotated {
+      transform: rotate(180deg);
+    }
+    
+    .card-content {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .card-content.expanded {
+      max-height: 800px;
+      opacity: 1;
+    }
+    
+    .progress-bar {
+      transition: width 0.5s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    // Simple React-like implementation
+    const state = {
+      expandedSteps: [],
+      steps: [
+        {
+          number: 1,
+          title: "Check for CIP ID Tags and cross reference Standard 209.1 CIP Tag Chart",
+          hasButton: true,
+          buttonText: "OH209.1 2025.pdf",
+          audioUrl: "./audio/step1.mp3"
+        },
+        {
+          number: 2,
+          title: "Try to ID the by CIP Equip types and/or walk to 2 spans left and/or right of the adjacent poles",
+          hasButton: false,
+          audioUrl: "./audio/step2.mp3"
+        },
+        {
+          number: 3,
+          title: "Request support from Joint Asset Management (JAM) via the CIP Identification Request Process",
+          hasButton: true,
+          buttonText: "VIP-Identification-Request-Process.pdf",
+          audioUrl: "./audio/step3.mp3"
+        }
+      ]
+    };
+
+    function toggleStep(stepNumber) {
+      const isExpanding = !state.expandedSteps.includes(stepNumber);
+      
+      if (isExpanding) {
+        state.expandedSteps.push(stepNumber);
+        // Play audio when expanding
+        const step = state.steps.find(s => s.number === stepNumber);
+        if (step?.audioUrl) {
+          const audio = new Audio(step.audioUrl);
+          audio.play().catch(err => {
+            console.log('Audio playback failed:', err);
+          });
+        }
+      } else {
+        state.expandedSteps = state.expandedSteps.filter(num => num !== stepNumber);
+      }
+      
+      render();
+    }
+
+    function handleButtonClick(buttonText) {
+      alert(`Opening: ${buttonText}`);
+      // You can replace this with actual PDF opening logic
+      // For Storyline, you might want to trigger a Storyline variable instead
+    }
+
+    function render() {
+      const completedCount = state.expandedSteps.length;
+      const progressPercentage = (completedCount / state.steps.length) * 100;
+      
+      const app = document.getElementById('app');
+      
+      app.innerHTML = `
+        <div style="width: 1920px; height: 1080px; font-family: 'Open Sans', sans-serif;" class="flex items-center justify-center">
+          <div class="w-full h-full p-16 flex flex-col">
+            <h1 class="text-5xl font-bold text-center text-gray-800 mb-16">
+              3-Step Approach for Identifying CIP
+            </h1>
+            
+            <div class="flex gap-8 items-start justify-center">
+              ${state.steps.map(step => `
+                <div class="w-1/3 bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl">
+                  <!-- Header - Always Visible -->
+                  <button
+                    onclick="toggleStep(${step.number})"
+                    class="w-full p-8 text-left transition-colors duration-200 hover:bg-blue-50 flex flex-col gap-4"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-3xl font-bold shadow-lg">
+                          ${step.number}
+                        </div>
+                        <span class="text-2xl font-bold text-gray-800">Step ${step.number}</span>
+                      </div>
+                      <svg 
+                        class="w-8 h-8 text-blue-600 chevron ${state.expandedSteps.includes(step.number) ? 'rotated' : ''}" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </div>
+                  </button>
+
+                  <!-- Expandable Content -->
+                  <div class="card-content ${state.expandedSteps.includes(step.number) ? 'expanded' : ''}">
+                    <div class="px-8 pb-8">
+                      <div class="border-t-2 border-gray-200 pt-6">
+                        <p class="text-gray-700 leading-relaxed mb-6" style="font-size: 28px;">
+                          ${step.title}
+                        </p>
+                        
+                        ${step.hasButton ? `
+                          <button
+                            onclick="handleButtonClick('${step.buttonText}')"
+                            class="flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+                          >
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-xl font-semibold">${step.buttonText}</span>
+                          </button>
+                        ` : ''}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mt-16">
+              <div class="flex items-center justify-between mb-4 max-w-4xl mx-auto">
+                <div class="text-2xl font-bold text-gray-800">
+                  Progress: ${completedCount}/${state.steps.length} Steps Viewed
+                </div>
+                ${completedCount === state.steps.length ? `
+                  <div class="flex items-center gap-2 text-green-600">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-2xl font-bold">Complete!</span>
+                  </div>
+                ` : ''}
+              </div>
+              <div class="max-w-4xl mx-auto bg-gray-200 rounded-full h-6 shadow-inner">
+                <div
+                  class="bg-gradient-to-r from-blue-500 to-blue-700 h-6 rounded-full progress-bar flex items-center justify-end pr-2"
+                  style="width: ${progressPercentage}%"
+                >
+                  ${progressPercentage > 0 ? `
+                    <span class="text-white text-sm font-bold">${Math.round(progressPercentage)}%</span>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html>
