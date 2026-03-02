@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CIP Identification Steps</title>
+<!-- Tailwind CDN (OK for online/LMS; for offline/strict networks, self-host or inline CSS) -->
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+   /* Full-bleed, no scrollbars */
+   html, body {
+     width: 100%;
+     height: 100%;
+     margin: 0;
+     padding: 0;
+     overflow: hidden;
+     background: #0d1f33;
+   }
+   * { box-sizing: border-box; font-family: 'Open Sans', sans-serif; }
+   /* This fills the iframe */
+   #viewport {
+     position: relative;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+   }
+   /* This is your 1920x1080 "stage" that gets scaled */
+   #stage {
+     position: absolute;
+     left: 50%;
+     top: 50%;
+     width: 1920px;
+     height: 1080px;
+     transform-origin: center center;
+     /* transform is set dynamically by JS */
+   }
+   .step-card {
+     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+   }
+   .step-card.expanded { transform: none; }
+   .step-content {
+     max-height: 0;
+     overflow: hidden;
+     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease;
+   }
+   .step-content.expanded { max-height: 400px; }
+   .step-number { transition: all 0.3s ease; }
+   .step-card:hover .step-number { transform: scale(1.1); }
+   .download-btn { transition: all 0.2s ease; }
+   .download-btn:hover { transform: translateY(-2px); }
+   .download-btn:active { transform: translateY(0); }
+   .chevron { transition: transform 0.3s ease; }
+   .chevron.rotated { transform: rotate(180deg); }
+</style>
+</head>
+<body>
+<!-- Fills the Storyline iframe -->
+<div id="viewport">
+<!-- 1920x1080 stage that scales to fit -->
+<div id="stage" class="flex flex-col"
+     style="background: linear-gradient(135deg, #1e3a5f 0%, #0d1f33 100%);"
+>
+<!-- Header -->
+<header class="text-center pt-12 pb-8">
+<h1 id="main-title" class="text-white font-bold tracking-wide" style="font-size: 42px;">
+         3-Step Approach for Identifying CIP
+</h1>
+<p class="text-blue-200 mt-3" style="font-size: 24px;">Communication Infrastructure Provider</p>
+<p class="text-blue-300 mt-6" style="font-size: 20px;">Click each step to learn more</p>
+</header>
+<!-- Steps Container -->
+<main class="flex-1 flex items-start justify-center gap-8 px-16 pt-4">
+<!-- Step 1 -->
+<div class="step-card bg-white rounded-2xl shadow-2xl cursor-pointer overflow-hidden"
+            style="width: 580px;" onclick="toggleStep(1)" id="card-1">
+<div class="p-8">
+<div class="flex items-center gap-6 mb-6">
+<div class="step-number w-20 h-20 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
+                  style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); font-size: 36px;">1</div>
+<h2 class="font-bold text-gray-800" style="font-size: 32px;">Step 1</h2>
+<svg class="chevron ml-auto w-8 h-8 text-gray-400" id="chevron-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+</svg>
+</div>
+<p class="text-gray-700 leading-relaxed" style="font-size: 28px;">
+             Check for CIP ID Tags and cross reference Standard 209.1 CIP Tag Chart
+</p>
+</div>
+<div class="step-content bg-gradient-to-b from-blue-50 to-white" id="content-1">
+<div class="p-8 pt-4">
+<div class="border-t-2 border-blue-100 pt-6">
+<p class="text-gray-600 mb-6" style="font-size: 22px;">Access the reference document:</p>
+<button class="download-btn flex items-center gap-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl"
+                       style="font-size: 24px;" onclick="event.stopPropagation(); downloadFile('OH209.1 2025.pdf')">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+</svg>
+<span class="font-semibold">OH209.1 2025.pdf</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="step-card bg-white rounded-2xl shadow-2xl cursor-pointer overflow-hidden"
+            style="width: 580px;" onclick="toggleStep(2)" id="card-2">
+<div class="p-8">
+<div class="flex items-center gap-6 mb-6">
+<div class="step-number w-20 h-20 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
+                  style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); font-size: 36px;">2</div>
+<h2 class="font-bold text-gray-800" style="font-size: 32px;">Step 2</h2>
+<svg class="chevron ml-auto w-8 h-8 text-gray-400" id="chevron-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+</svg>
+</div>
+<p class="text-gray-700 leading-relaxed" style="font-size: 28px;">
+             Try to ID by CIP Equip types and/or walk to 2 spans left and/or right of the adjacent poles
+</p>
+</div>
+<div class="step-content bg-gradient-to-b from-emerald-50 to-white" id="content-2">
+<div class="p-8 pt-4">
+<div class="border-t-2 border-emerald-100 pt-6">
+<div class="flex items-center gap-4 text-emerald-700" style="font-size: 22px;">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+</svg>
+<p>Visual inspection and field verification required</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="step-card bg-white rounded-2xl shadow-2xl cursor-pointer overflow-hidden"
+            style="width: 580px;" onclick="toggleStep(3)" id="card-3">
+<div class="p-8">
+<div class="flex items-center gap-6 mb-6">
+<div class="step-number w-20 h-20 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
+                  style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); font-size: 36px;">3</div>
+<h2 class="font-bold text-gray-800" style="font-size: 32px;">Step 3</h2>
+<svg class="chevron ml-auto w-8 h-8 text-gray-400" id="chevron-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+</svg>
+</div>
+<p class="text-gray-700 leading-relaxed" style="font-size: 28px;">
+             Request support from Joint Asset Management (JAM) via the CIP Identification Request Process
+</p>
+</div>
+<div class="step-content bg-gradient-to-b from-amber-50 to-white" id="content-3">
+<div class="p-8 pt-4">
+<div class="border-t-2 border-amber-100 pt-6">
+<p class="text-gray-600 mb-6" style="font-size: 22px;">Access the request process document:</p>
+<button class="download-btn flex items-center gap-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl"
+                       style="font-size: 24px;" onclick="event.stopPropagation(); downloadFile('CIP-Identification-Request-Process.pdf')">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+</svg>
+<span class="font-semibold">CIP-Identification-Request-Process.pdf</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Progress Tracker -->
+<footer class="flex justify-center items-center gap-12 pb-8">
+<div class="flex items-center gap-4">
+<div id="progress-1" class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold cursor-pointer transition-all duration-300"
+              style="background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%); font-size: 18px;" onclick="toggleStep(1)">
+<span class="text-gray-500" style="font-size: 18px;">1</span>
+</div>
+<div class="w-16 h-1 bg-gray-400 rounded-full"></div>
+<div id="progress-2" class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold cursor-pointer transition-all duration-300"
+              style="background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%); font-size: 18px;" onclick="toggleStep(2)">
+<span class="text-gray-500" style="font-size: 18px;">2</span>
+</div>
+<div class="w-16 h-1 bg-gray-400 rounded-full"></div>
+<div id="progress-3" class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold cursor-pointer transition-all duration-300"
+              style="background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%); font-size: 18px;" onclick="toggleStep(3)">
+<span class="text-gray-500" style="font-size: 18px;">3</span>
+</div>
+</div>
+</footer>
+</div>
+</div>
+<script>
+   // --- SCALE TO FIT STORYLINE WEB OBJECT FRAME ---
+   const BASE_W = 1920;
+   const BASE_H = 1080;
+   function scaleStage() {
+     const viewport = document.getElementById('viewport');
+     const stage = document.getElementById('stage');
+     const vw = viewport.clientWidth;
+     const vh = viewport.clientHeight;
+     // Fit entire 1920x1080 into whatever size the iframe is
+     const scale = Math.min(vw / BASE_W, vh / BASE_H);
+     stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+   }
+   window.addEventListener('resize', scaleStage);
+   window.addEventListener('load', scaleStage);
+   // --- YOUR INTERACTION LOGIC (unchanged) ---
+   let expandedStep = null;
+   function toggleStep(stepNum) {
+     const content = document.getElementById(`content-${stepNum}`);
+     const chevron = document.getElementById(`chevron-${stepNum}`);
+     const card = document.getElementById(`card-${stepNum}`);
+     if (expandedStep === stepNum) {
+       content.classList.remove('expanded');
+       chevron.classList.remove('rotated');
+       card.classList.remove('expanded');
+       expandedStep = null;
+       updateProgress(null);
+     } else {
+       if (expandedStep !== null) {
+         document.getElementById(`content-${expandedStep}`).classList.remove('expanded');
+         document.getElementById(`chevron-${expandedStep}`).classList.remove('rotated');
+         document.getElementById(`card-${expandedStep}`).classList.remove('expanded');
+       }
+       content.classList.add('expanded');
+       chevron.classList.add('rotated');
+       card.classList.add('expanded');
+       expandedStep = stepNum;
+       updateProgress(stepNum);
+     }
+   }
+   function updateProgress(activeStep) {
+     for (let i = 1; i <= 3; i++) {
+       const progressCircle = document.getElementById(`progress-${i}`);
+       if (activeStep && i < activeStep) {
+         progressCircle.style.background = 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)';
+         progressCircle.innerHTML = '<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+       } else if (activeStep && i === activeStep) {
+         progressCircle.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+         progressCircle.innerHTML = `<span style="font-size: 18px;">${i}</span>`;
+       } else {
+         progressCircle.style.background = 'linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%)';
+         progressCircle.innerHTML = `<span class="text-gray-500" style="font-size: 18px;">${i}</span>`;
+       }
+     }
+   }
+   function downloadFile(filename) {
+     const toast = document.createElement('div');
+     toast.className = 'fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-xl z-50';
+     toast.style.fontSize = '20px';
+     toast.innerHTML = `<span class="flex items-center gap-3">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+</svg>
+       In Storyline: Link "${filename}" to your resources
+</span>`;
+     document.body.appendChild(toast);
+     setTimeout(() => toast.remove(), 3000);
+   }
+</script>
+</body>
+</html>
